@@ -1,13 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getUser } from "../api/user";
 import { Header } from "../components/Header";
 import StudentList from "../components/StudentList";
 
 export function Teacherpage() {
+  const [user, setUser] = useState<any>(null);
   function fetchuserDetails() {
     getUser()
       .then((x) => {
-        console.log(x);
+        setUser(x);
       })
       .catch((e) => {
         window.location.href = "/login";
@@ -16,10 +17,14 @@ export function Teacherpage() {
   useEffect(() => {
     fetchuserDetails();
   }, []);
-  return (
-    <div>
-      <Header />
-      <StudentList />
-    </div>
-  );
+  if (user) {
+    return (
+      <div>
+        <Header />
+        <StudentList />
+      </div>
+    );
+  } else {
+    return <></>;
+  }
 }
